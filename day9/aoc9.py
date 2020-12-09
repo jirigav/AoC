@@ -6,20 +6,14 @@ def load_data(filename):
     return data
 
 def part1(data):
-    preamble = []
-    for i in range(25):
-        preamble.append(data[i])
-
     for i in range(25, len(data)):
         sum_of_two = False
-        for a in preamble:
-            for b in preamble:
-                if a + b == data[i]:
+        for a in range(i - 25, i):
+            for b in range(i - 25, i):
+                if data[a] + data[b] == data[i]:
                     sum_of_two = True
         if not sum_of_two:
             return data[i]
-        preamble = preamble[1:]
-        preamble.append(data[i])
 
 def part2(data):
     result1 = part1(data)
