@@ -25,12 +25,16 @@ fn part1(values: &Vec<i64>) -> i64 {
 }
 
 fn part2(values: Vec<i64>) -> i64 {
-    let mut new_vec: Vec<i64> = Vec::new();
+    let mut count = 0;
+    let mut prev_sum = values[0] + values[1] + values[2];
 
     for i in 0..(values.len() - 2) {
-        new_vec.push(values[i] + values[i + 1] + values[i + 2]);
+        if prev_sum < values[i] + values[i + 1] + values[i + 2] {
+            count += 1;
+        }
+        prev_sum = values[i] + values[i + 1] + values[i + 2];
     }
-    part1(&new_vec)
+    count
 }
 
 fn main() {
