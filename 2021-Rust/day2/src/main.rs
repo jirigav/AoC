@@ -9,13 +9,10 @@ fn read_lines_strings(file_path: &str) -> Vec<(String, i32)> {
         .lines()
         .map(|line| line.unwrap().parse::<String>().unwrap())
         .map(|x| {
+            let split = x.split(" ").collect::<Vec<&str>>();
             (
-                x.split(" ").collect::<Vec<&str>>()[0]
-                    .parse::<String>()
-                    .unwrap(),
-                x.split(" ").collect::<Vec<&str>>()[1]
-                    .parse::<i32>()
-                    .unwrap(),
+                split[0].parse::<String>().unwrap(),
+                split[1].parse::<i32>().unwrap(),
             )
         })
         .collect()
