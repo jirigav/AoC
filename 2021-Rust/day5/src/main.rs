@@ -43,7 +43,7 @@ fn part1_and_2(input: &Vec<((i32, i32), (i32, i32))>, is_part2: bool) -> usize {
                     );
                 }
             }
-        } else if is_part2 & ((x1 - x2).abs() == (y1 - y2).abs()) {
+        } else if is_part2 {
             for i in 0..((x1 - x2).abs() + 1) {
                 add_point(
                     &mut points,
