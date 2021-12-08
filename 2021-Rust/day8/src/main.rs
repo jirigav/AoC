@@ -29,8 +29,6 @@ fn part1(input: &Vec<String>) -> usize {
 fn part2(input: Vec<String>) -> i64 {
     let mut one: HashSet<char> = HashSet::new();
     let mut four: HashSet<char> = HashSet::new();
-    let mut seven: HashSet<char> = HashSet::new();
-    let mut eight: HashSet<char> = HashSet::new();
     let mut result: i64 = 0;
 
     for line in input {
@@ -41,17 +39,10 @@ fn part2(input: Vec<String>) -> i64 {
 
             match chars.len() {
                 2 => one = chars.chars().collect(),
-                3 => seven = chars.chars().collect(),
                 4 => four = chars.chars().collect(),
-                7 => eight = chars.chars().collect(),
                 _ => {}
             }
         }
-
-        let left_bottom: HashSet<char> = eight
-            .difference(&four.union(&seven).map(|x| *x).collect())
-            .map(|x| *x)
-            .collect();
 
         let to_resolve = &line
             .split("|")
@@ -68,7 +59,7 @@ fn part2(input: Vec<String>) -> i64 {
                 7 => output = output * 10 + 8,
                 6 => {
                     let set: HashSet<char> = chars.chars().collect();
-                    if set.difference(&left_bottom).count() == 5 {
+                    if set.difference(&four).count() == 2 {
                         output = output * 10 + 9;
                     } else if set.difference(&one).count() == 5 {
                         output = output * 10 + 6;
@@ -80,7 +71,7 @@ fn part2(input: Vec<String>) -> i64 {
                     let set: HashSet<char> = chars.chars().collect();
                     if set.difference(&one).count() == 3 {
                         output = output * 10 + 3;
-                    } else if set.difference(&left_bottom).count() == 3 {
+                    } else if set.difference(&four).count() == 3 {
                         output = output * 10 + 2;
                     } else {
                         output = output * 10 + 5;
