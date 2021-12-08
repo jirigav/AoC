@@ -6,17 +6,14 @@ fn read_lines_strings(file_path: &str) -> Vec<String> {
     let file = File::open(file_path).expect("file wasn't found.");
     let reader = BufReader::new(file);
 
-    reader
-        .lines()
-        .map(|line| line.unwrap().parse::<String>().unwrap())
-        .collect()
+    reader.lines().map(|line| line.unwrap()).collect()
 }
 
 fn part1(input: &Vec<String>) -> usize {
     input
         .into_iter()
         .map(|x| {
-            let split: Vec<String> = x.split("|").map(|x| x.parse::<String>().unwrap()).collect();
+            let split: Vec<&str> = x.split("|").collect();
             split[1]
                 .split_whitespace()
                 .into_iter()
@@ -44,10 +41,7 @@ fn part2(input: Vec<String>) -> i64 {
             }
         }
 
-        let to_resolve = &line
-            .split("|")
-            .map(|x| x.parse::<String>().unwrap())
-            .collect::<Vec<String>>()[1];
+        let to_resolve = &line.split("|").collect::<Vec<&str>>()[1];
 
         let mut output: i64 = 0;
 
