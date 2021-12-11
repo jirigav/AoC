@@ -41,8 +41,29 @@ fn increment_all(map: &mut HashMap<(usize, usize), u32>) -> bool {
     let mut found = false;
     for (_, v) in map.iter_mut() {
         *v = *v + 1;
-        if (*v + 1) > 9 {
-            found = true;
+        found = found || (*v + 1) > 9;
+    }
+    found
+}
+
+fn increase_flashed_neighbours(
+    map: &mut HashMap<(usize, usize), u32>,
+    flashed: &mut HashSet<(usize, usize)>,
+) -> bool {
+    let mut found = false;
+
+    for i in 0..10 {
+        for j in 0..10 {
+            if *map.get(&(i, j)).unwrap() > 9 {
+                for (a, b) in get_neighbours(i, j).into_iter() {
+                    if map.contains_key(&(a, b)) && !flashed.contains(&(a, b)) {
+                        map.insert((a, b), map.get(&(a, b)).unwrap() + 1);
+                    }
+                }
+                found = true;
+                map.insert((i, j), 0);
+                flashed.insert((i, j));
+            }
         }
     }
     found
@@ -56,25 +77,9 @@ fn solve(mut map: HashMap<(usize, usize), u32>, is_part2: bool) -> usize {
         let mut found = increment_all(&mut map);
 
         while found {
-            found = false;
-
-            for i in 0..10 {
-                for j in 0..10 {
-                    let val = *map.get(&(i, j)).unwrap();
-                    if val > 9 {
-                        found = true;
-                        map.insert((i, j), 0);
-                        flashed.insert((i, j));
-
-                        for (a, b) in get_neighbours(i, j).into_iter() {
-                            if map.contains_key(&(a, b)) && !flashed.contains(&(a, b)) {
-                                map.insert((a, b), map.get(&(a, b)).unwrap() + 1);
-                            }
-                        }
-                    }
-                }
-            }
+            found = increase_flashed_neighbours(&mut map, &mut flashed);
         }
+
         counter += flashed.len();
         if r == 100 && !is_part2 {
             break;
