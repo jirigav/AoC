@@ -39,20 +39,16 @@ fn get_neighbours(i: usize, j: usize) -> Vec<(usize, usize)> {
 
 fn increment_all(map: &mut HashMap<(usize, usize), u32>) -> bool {
     let mut found = false;
-    for i in 0..10 {
-        for j in 0..10 {
-            let new_val = map.get(&(i, j)).unwrap() + 1;
-            map.insert((i, j), new_val);
-
-            if new_val > 9 {
-                found = true;
-            }
+    for (_, v) in map.iter_mut() {
+        *v = *v + 1;
+        if (*v + 1) > 9 {
+            found = true;
         }
     }
     found
 }
 
-fn part1(mut map: HashMap<(usize, usize), u32>, is_part2: bool) -> usize {
+fn solve(mut map: HashMap<(usize, usize), u32>, is_part2: bool) -> usize {
     let mut counter = 0;
     let mut r = 1;
     loop {
@@ -79,7 +75,6 @@ fn part1(mut map: HashMap<(usize, usize), u32>, is_part2: bool) -> usize {
                 }
             }
         }
-
         counter += flashed.len();
         if r == 100 && !is_part2 {
             break;
@@ -96,6 +91,6 @@ fn part1(mut map: HashMap<(usize, usize), u32>, is_part2: bool) -> usize {
 fn main() {
     let map = read_lines_to_map("./input");
 
-    println!("{:?}", part1(map.clone(), false));
-    println!("{:?}", part1(map, true));
+    println!("{:?}", solve(map.clone(), false));
+    println!("{:?}", solve(map, true));
 }
