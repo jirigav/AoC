@@ -1,3 +1,4 @@
+#![feature(mixed_integer_ops)]
 use std::collections::{HashMap, HashSet};
 use std::fs::File;
 use std::io::{BufRead, BufReader};
@@ -22,15 +23,13 @@ fn get_neighbours(i: usize, j: usize) -> Vec<(usize, usize)> {
     let mut neighbours: Vec<(usize, usize)> = Vec::new();
     for a in [-1, 0, 1] {
         for b in [-1, 0, 1] {
-            if a == 0 && b == 0 {
-                continue;
-            }
-            if ((i as i32) + a) >= 0
-                && ((i as i32) + a) < 10
-                && ((j as i32) + b) >= 0
-                && ((j as i32) + b) < 10
-            {
-                neighbours.push((((i as i32) + a) as usize, ((j as i32) + b) as usize))
+            match (i.checked_add_signed(a), j.checked_add_signed(b)) {
+                (Some(k), Some(l)) => {
+                    if k < 10 && l < 10 {
+                        neighbours.push((k, l))
+                    }
+                }
+                _ => {}
             }
         }
     }
